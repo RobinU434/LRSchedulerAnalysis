@@ -1,37 +1,24 @@
-import os
-from torch import optim, nn, utils, Tensor
-from torchvision.datasets import MNIST
-from torchvision.transforms import ToTensor
-import lightning as L
-
-# define any number of nn.Modules (or use your current ones)
-encoder = nn.Sequential(nn.Linear(28 * 28, 64), nn.ReLU(), nn.Linear(64, 3))
-decoder = nn.Sequential(nn.Linear(3, 64), nn.ReLU(), nn.Linear(64, 28 * 28))
+import torch
+from torch import Tensor
+import torch.nn as nn
+import torch.nn.functional as F
 
 
-# define the LightningModule
-class LitResNet(L.LightningModule):
-    def __init__(self, encoder, decoder):
+class Classifier(nn.Module):
+    def __init__(self):
         super().__init__()
-        self.encoder = encoder
-        self.decoder = decoder
+        self.conv1 = nn.Conv2d(3, 6, 5)
+        self.pool = nn.MaxPool2d(2, 2)
+        self.conv2 = nn.Conv2d(6, 16, 5)
+        self.fc1 = nn.Linear(16 * 5 * 5, 120)
+        self.fc2 = nn.Linear(120, 84)
+        self.fc3 = nn.Linear(84, 10)
 
-    def training_step(self, batch, batch_idx):
-        # training_step defines the train loop.
-        # it is independent of forward
-        x, y = batch
-        x = x.view(x.size(0), -1)
-        z = self.encoder(x)
-        x_hat = self.decoder(z)
-        loss = nn.functional.mse_loss(x_hat, x)
-        # Logging to TensorBoard (if installed) by default
-        self.log("train_loss", loss)
-        return loss
-
-    def configure_optimizers(self):
-        optimizer = optim.Adam(self.parameters(), lr=1e-3)
-        return optimizer
-
-
-# init the autoencoder
-autoencoder = LitAutoEncoder(encoder, decoder)
+    def forward(self, x):
+        x = self.pool(F.relu(self.conv1(x)))
+        x = self.pool(F.relu(self.conv2(x)))
+        x = torch.flatten(x, 1)  # flatten all dimensions except batch
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
