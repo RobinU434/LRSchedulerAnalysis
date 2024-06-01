@@ -1,0 +1,3 @@
+[submodule "project/ViT-CIFAR"]
+	path = project/ViT-CIFAR
+	url = https://github.com/omihub777/ViT-CIFAR
