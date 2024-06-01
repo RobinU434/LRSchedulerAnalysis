@@ -66,11 +66,12 @@ class CIFARLitDataModule(LightningDataModule):
     def train_dataloader(self) -> DataLoader:
         return DataLoader(
             self.train_set,
-            batch_size=128,
+            batch_size=512,
             shuffle=True,
             drop_last=True,
             pin_memory=True,
-            num_workers=4,
+            num_workers=8,
+            persistent_workers=True,
         )
 
     def val_dataloader(self) -> DataLoader:
@@ -79,7 +80,8 @@ class CIFARLitDataModule(LightningDataModule):
             batch_size=2048,
             shuffle=False,
             drop_last=False,
-            num_workers=4,
+            num_workers=8,
+            persistent_workers=True,
         )
 
     def test_dataloader(self) -> DataLoader:
@@ -88,5 +90,6 @@ class CIFARLitDataModule(LightningDataModule):
             batch_size=2048,
             shuffle=False,
             drop_last=False,
-            num_workers=4,
+            num_workers=8,
+            persistent_workers=True,
         )
