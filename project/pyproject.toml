@@ -17,6 +17,7 @@ seaborn = "^0.13.2"
 tensorboard = "^2.16.2"
 rich = "^13.7.1"
 ipywidgets = "^8.1.2"
+torchsummary = "^1.5.1"
 
 
 [build-system]
