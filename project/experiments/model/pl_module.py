@@ -9,6 +9,7 @@ from torch import nn, optim
 from torch.optim import lr_scheduler
 from lightning.pytorch import LightningModule
 
+
 class CIFARLitModule(LightningModule):
     def __init__(
         self,
@@ -34,7 +35,7 @@ class CIFARLitModule(LightningModule):
         self.loss_module = nn.CrossEntropyLoss()
         # Example input for visualizing the graph in Tensorboard
         self.example_input_array = torch.zeros((1, 3, 32, 32), dtype=torch.float32)
-        
+
     def forward(self, imgs):
         # Forward function that is run when visualizing the graph
         return self.model(imgs)
@@ -52,9 +53,26 @@ class CIFARLitModule(LightningModule):
 
         try:
             scheduler_cls = getattr(lr_scheduler, self.hparams.lr_scheduler_name)
-            scheduler = scheduler_cls(
-                optimizer=optimizer, **self.hparams.lr_scheduler_hparams
-            )
+            if self.hparams.lr_scheduler_name == "SequentialLR":
+                scheduler1 = lr_scheduler.LinearLR(
+                    optimizer=optimizer,
+                    start_factor=self.hparams.lr_scheduler_hparams["start_factor"],
+                    total_iters=self.hparams.lr_scheduler_hparams["total_iters"],
+                )
+                # scheduler2 = lr_scheduler.ConstantLR(optimizer=optimizer, factor=1)
+                scheduler2 = lr_scheduler.CosineAnnealingLR(
+                    optimizer=optimizer,
+                    T_max=self.hparams.lr_scheduler_hparams["T_max"],
+                    eta_min=self.hparams.lr_scheduler_hparams["eta_min"],
+                )
+                kwargs = {
+                    "schedulers": [scheduler1, scheduler2],
+                    "milestones": [self.hparams.lr_scheduler_hparams["total_iters"]],
+                }
+            else:
+                kwargs = self.hparams.lr_scheduler_hparams
+
+            scheduler = scheduler_cls(optimizer=optimizer, **kwargs)
         except AttributeError:
             assert False, f'Unknown lr_scheduler: "{self.hparams.lr_scheduler_name}"'
 
