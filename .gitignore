@@ -163,3 +163,4 @@ cython_debug/
 data/*
 project/data/*
 project/results/*
+project/figs/*
