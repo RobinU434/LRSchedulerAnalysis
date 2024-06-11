@@ -208,6 +208,6 @@ The repository is licensed under the [MIT license](./LICENSE).
 
 ## Acknowledgements
 
-This repo was created within the Deep-Learning-Research-Kitchen-Seminar hosted by Dr. Antonio Orvieto, Dr. Jonas Geiping, Dr. Frank Schneider and Prof. Dr. Phlipp Hennig. Thank you for your valuable insights and the framework to build this project. 
+This repo was created within the Deep-Learning-Research-Kitchen-Seminar hosted by Dr. Antonio Orvieto, Dr. Jonas Geiping, Dr. Frank Schneider and Prof. Dr. Philipp Hennig. Thank you for your valuable insights and the framework to build this project. 
 
 Further I especially would like to thank Prof. Hennig for sharing his personal template for the slides.  
