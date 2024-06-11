@@ -81,7 +81,6 @@ class CIFARLitModule(LightningModule):
     def training_step(self, batch, batch_idx):
         # "batch" is the output of the training data loader.
         imgs, labels = batch
-        # print(imgs.shape)
         preds = self.model(imgs)
         loss = self.loss_module(preds, labels)
         acc = (preds.argmax(dim=-1) == labels).float().mean()
