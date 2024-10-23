@@ -1,4 +1,4 @@
-# Deep Learning Research Kitchen
+# Learning Rate Scheduler Analysis
 
 
 This repository houses the materials for the talk on learning rate schedulers in deep learning within the seminar [Deep Learning Research Kitchen](https://uni-tuebingen.de/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/methoden-des-maschinellen-lernens/lehre/).  
